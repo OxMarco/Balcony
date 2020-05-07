@@ -5,25 +5,33 @@
  *  below. Or just customize this script to talk to other HTTP servers.
  *
  */
-
+ 
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
+#include <ESP8266httpUpdate.h>
+#include <coredecls.h>
+#include <include/WiFiState.h>
+#include <PubSubClient.h>
 #include <Wire.h>
-#include "BMP280.h"
+#include <ArduinoJson.h>
+#include "MAX44009.h"
 #include "params.h"
+#include "ota.h"
 
 #define DEBUG
+
+ADC_MODE(ADC_VCC);
 
 unsigned long int sleep_time = 10 * 60e6; // 10 minutes
 unsigned long int err_sleep_time = 60e6; // 1 minute
 
-BMP280 bmp;
-const int min_temp = -4;
-const int max_temp = 50;
-const int min_pres = 800;
-const int max_pres = 2000;
+MAX44009 Lux(0x4A);
+const int min_lux = 0;
+const int max_lux = 18800;
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+
 #ifdef DEBUG
   Serial.begin(115200);
   Serial.setTimeout(2000);
@@ -34,7 +42,8 @@ void setup() {
   Serial.print("Connecting to ");
   Serial.println(ssid);
 #endif
-  
+
+  // Setup WiFi
   WiFi.persistent(false);
   WiFi.mode(WIFI_OFF);
   WiFi.mode(WIFI_STA);
@@ -71,18 +80,17 @@ void setup() {
   Serial.println(WiFi.localIP());
 #endif
 
-  bmp.setSampling(BMP280::MODE_NORMAL,      /* Operating Mode. */
-                  BMP280::SAMPLING_X2,      /* Temp. oversampling */
-                  BMP280::SAMPLING_X16,     /* Pressure oversampling */
-                  BMP280::FILTER_X16,       /* Filtering. */
-                  BMP280::STANDBY_MS_1000); /* Standby time. */
+  // Setup MQTT
+
+  // Setup sensors
+  Lux.Begin(min_lux, max_lux); //Begin with full range min and max values
+
 #ifdef DEBUG
   Serial.println("setup concluded");
 #endif
 }
 
 void loop() {
-  delay(5000);
   unsigned long int t;
 
 #ifdef DEBUG
@@ -90,28 +98,23 @@ void loop() {
   Serial.println(host);
 #endif
   
-  float temp = bmp.readTemperature();
-  float pres = bmp.readPressure();
- 
+  float lux = Lux.GetLux();
+
 #ifdef DEBUG
-  Serial.println("temp");
-  Serial.println(temp);
-  Serial.println("pres");
-  Serial.println(pres);
+  Serial.println("lux");
+  Serial.println(lux);
 #endif
   String url = host;
 
-  if( (temp < min_temp || temp > max_temp) || (pres < min_pres || pres > max_pres) )
+  if(lux < min_lux || lux > max_lux)
   {
-    url += "field8=300";
+    url += "field8=1";
     t = err_sleep_time;
   } 
   else
   {
-    url += "field2=";
-    url += temp;
-    url += "field3=";
-    url += pres;
+    url += "field1=";
+    url += lux;
     t = sleep_time;
   }
 
@@ -145,8 +148,6 @@ void loop() {
   Serial.println();
   Serial.println("closing connection");
 #endif
-
-  bmp.setSampling(BMP280::MODE_SLEEP);
 
   ESP.deepSleep(t);
 }
