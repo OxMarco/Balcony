@@ -81,4 +81,3 @@ function insert_message(topic, message, packet) {
         if (error) throw error;
     });
 };
-

@@ -1,7 +1,6 @@
 # Balcony Project
 ![logo](https://cdn.dribbble.com/users/1797520/screenshots/5983584/thatsamole_thumbnail.jpg)
 
-
 ## Abstract
 The n-th project about multiple redundant power-independent sensor boxes to monitor environmental parameters of a balcony garden.
 
@@ -56,3 +55,9 @@ Most IoT solutions suffer several issues in the long run, some dependent on the 
 * MAX44009 ambient light sensor
 * Sealed soil moisture sensor
 
+## Working Diagram
+
+
+## Credits
+* logo - Fabrizio Garda (https://dribbble.com/fgarda)
+* OTA (https://www.bakke.online/index.php/2017/06/02/self-updating-ota-firmware-for-esp8266/)

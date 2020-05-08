@@ -23,13 +23,6 @@ app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
 });
 
-
-
-
-
-
-
-
     /* parse message
     try {
         const data = JSON.parse(message)
