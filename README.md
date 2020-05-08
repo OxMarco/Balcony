@@ -1,4 +1,6 @@
 # Balcony Project
+![logo](https://cdn.dribbble.com/users/1797520/screenshots/5983584/thatsamole_thumbnail.jpg)
+
 
 ## Abstract
 The n-th project about multiple redundant power-independent sensor boxes to monitor environmental parameters of a balcony garden.

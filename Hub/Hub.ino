@@ -14,6 +14,8 @@
 #include <PubSubClient.h>
 #include <Wire.h>
 #include <ArduinoJson.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 #include "MAX44009.h"
 #include "params.h"
 #include "ota.h"
@@ -24,6 +26,10 @@ ADC_MODE(ADC_VCC);
 
 unsigned long int sleep_time = 10 * 60e6; // 10 minutes
 unsigned long int err_sleep_time = 60e6; // 1 minute
+
+WiFiUDP ntpUDP;
+const long utcOffsetInSeconds = 7200;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 
 MAX44009 Lux(0x4A);
 const int min_lux = 0;
@@ -80,6 +86,9 @@ void setup() {
   Serial.println(WiFi.localIP());
 #endif
 
+  // Setup NTP
+  timeClient.begin();
+
   // Setup MQTT
 
   // Setup sensors
@@ -91,6 +100,8 @@ void setup() {
 }
 
 void loop() {
+  timeClient.update();
+
   unsigned long int t;
 
 #ifdef DEBUG
