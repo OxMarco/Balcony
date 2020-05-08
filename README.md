@@ -56,10 +56,7 @@ Most IoT solutions suffer several issues in the long run, some dependent on the 
 * Sealed soil moisture sensor
 
 ## Working Diagram
-![diagram](https://github.com/grcasanova/Balcony/blob/master/mqtt_diagram.png?raw=true =400x400)
-
-
-
+![diagram](https://raw.githubusercontent.com/grcasanova/Balcony/master/mqtt_diagram.png =400x400)
 
 ## Credits
 * logo - Fabrizio Garda (https://dribbble.com/fgarda)
