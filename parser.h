@@ -1,4 +1,7 @@
-char* serialize(float pressure,
+/**
+ * @brief Sensor box data (de)serialisation functions
+ */
+char* serializeSensorData(float pressure,
                 float temperature,
                 float humidity,
                 float light,
@@ -18,7 +21,7 @@ char* serialize(float pressure,
   return buff;
 }
 
-void deserialize(String json) {
+void deserializeSensorData(String json) {
   DynamicJsonDocument buff(500);
   DeserializationError err = deserializeJson(buff,json);
 
@@ -27,5 +30,38 @@ void deserialize(String json) {
   float humidity = buff['humidity'];
   float light = buff['light'];
   float moisture = buff['moisture'];
+  long tmsp = buff['tmsp'];
+}
+
+/**
+ * @brief Hub data (de)serialisation functions
+*/
+
+char* serializeHubData(float air_quality,
+                float temperature,
+                float humidity,
+                bool valveStatus) {
+  DynamicJsonDocument json(500);
+  char buff[1024];
+
+  json["air_quality"] = air_quality;
+  json["temperature"] = temperature;
+  json["humidity"] = humidity;
+  json["valveStatus"] = valveStatus;
+  json["tmsp"] = timeClient.getEpochTime();
+   
+  serializeJson(json, buff);
+
+  return buff;
+}
+
+void deserializeHubData(String json) {
+  DynamicJsonDocument buff(500);
+  DeserializationError err = deserializeJson(buff,json);
+
+  float air_quality = buff['air_quality'];
+  float temperature = buff['temperature'];
+  float humidity = buff['humidity'];
+  bool valveStatus = buff['valveStatus'];
   long tmsp = buff['tmsp'];
 }

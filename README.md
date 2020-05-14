@@ -2,12 +2,12 @@
 ![logo](https://cdn.dribbble.com/users/1797520/screenshots/5983584/thatsamole_thumbnail.jpg)
 
 ## Abstract
-The n-th project about multiple redundant power-independent sensor boxes to monitor environmental parameters of a balcony garden.
+The _n-th_ project about multiple redundant power-independent sensors to monitor environmental parameters of a balcony garden.
 
 What makes it different from other projects is the modular and easily extensible structure and the extensive debug logging. The final goal is to create a robust IoT device able to run for several years without requiring maintenance.
 
 ## Description
-The design consists of two separate elements, multiple sensor boxes and a single hub. 
+The design consists of two separate elements, multiple _sensor boxes_ and a single _hub_. 
 Sensor boxes are autonomous thanks to a solar panel while the hub is connected to a wall adapter and to the Internet via WiFi through the MQTT IoT protocol. A remote server acts as a MQTT broker and performs data analysis.
 
 The sensor boxes perform environmental data collection and stream it via MQTT to the hub at a configurable frequency. They support OTA updates from a server and can receive new congurations on a separate channel. Errors are streamed via MQTT to the hub that logs and uploads them to the remote server. In case of need, sensor boxes can save errors locally on SPIFFS to stream them later when reconnecting to the hub.
@@ -45,6 +45,7 @@ Most IoT solutions suffer several issues in the long run, some dependent on the 
 * 12V 1/2" solenoid N/C water valve
 * 12V wall adapter
 * DHT11 temperature and humidity sensor
+* ZPH02-PM2.5 dust sensor
 
 ### Box-specific
 * Esp8266 Wemos D1 mini
@@ -57,8 +58,11 @@ Most IoT solutions suffer several issues in the long run, some dependent on the 
 
 ## Working Diagram
 Here is a scheme, in orange the hardware nodes (sensor boxes and the hub), in grey the software nodes running on the remote server.
-![diagram](https://raw.githubusercontent.com/grcasanova/Balcony/master/mqtt_diagram.png)
+![working diagram](https://raw.githubusercontent.com/grcasanova/Balcony/master/working_scheme.png)
+
+## MQTT Scheme
+![mqtt scheme](https://raw.githubusercontent.com/grcasanova/Balcony/master/mqtt_scheme.png)
 
 ## Credits
 * logo - Fabrizio Garda (https://dribbble.com/fgarda)
-* OTA (https://www.bakke.online/index.php/2017/06/02/self-updating-ota-firmware-for-esp8266/)
+* OTA - Erik H. Bakke (https://www.bakke.online/)

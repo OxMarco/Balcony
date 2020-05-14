@@ -1,3 +1,5 @@
 .DS_Store
 params.h
 *.bak
+Server/
+mqtt_scheme.drawio
